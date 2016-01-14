@@ -14,6 +14,26 @@
 
   <!--Insert in DOM with jquery-->
   <script src="js/notify-tc.js"></script>
+  <script>
+
+    (function(){
+    //prueba _________________>
+      miAlerta = new Alert_tc();
+
+      //Text incorrect on pressed
+      $('#buttom_1').click(function(e){
+        miAlerta.error('Error al generar mapa');
+      })
+
+      //Text correct on pressed
+      $('#buttom_2').click(function(e){
+          miAlerta.success('Mapa generado satisfactoriamente');
+      })
+
+    })()
+
+
+  </script>
 
 </body>
 </html>
