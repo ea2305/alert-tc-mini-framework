@@ -26,7 +26,7 @@
             this.title = title;
         }
 
-        this.error = function (title, position) {
+        this.error = function (title) {
             var intervalClose;
             var timeLimit = 5000;
             title = (this.title != '') ? this.title : title;
@@ -56,7 +56,7 @@
         }
 
         //Show alert when the call is correct
-        this.success = function (title, position) {
+        this.success = function (title) {
             var intervalClose;
             var timeLimit = 5000;
             title = (this.title != '') ? this.title : title;

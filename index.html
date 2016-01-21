@@ -5,7 +5,17 @@
   <title>Document</title>
 
   <script src="js/jquery.min.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="css/notify-tc.css">
+
+  <style>
+  body{
+    width: 100%;
+    height: 700px;
+    padding: 0px;
+    margin: 0px;
+  }
+  </style>
 </head>
 <body>
 
@@ -22,12 +32,12 @@
 
       //Text incorrect on pressed
       $('#buttom_1').click(function(e){
-        miAlerta.error('Error al generar mapa');
+        alertify_tc.error('0123456789012345678901234567890123456789');
       })
 
       //Text correct on pressed
       $('#buttom_2').click(function(e){
-          miAlerta.success('Mapa generado satisfactoriamente');
+          alertify_tc.success('Mapa generado satisfactoriamente');
       })
 
     })()
