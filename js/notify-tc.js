@@ -7,57 +7,43 @@
         this.sizeY = 150;
 
         //Changes in sizes
-        this.sizeY_small = 100;
-        this.sizeY_medium = 200;
+        this.sizeY_small = 120;
+        this.sizeY_medium = 250;
 
         this.timeIn = 300;
         this.timeOut = 300;
 
-/*
-        var translate_start = {
-            width: this.sizeX,
-            opacity: 1
-        };
- */
-
         //Modify
-        var translate_start_small = {
+        this.translate_start = {
             width: this.sizeX,
             height: this.sizeY_small,
             opacity: 1
         };
 
-
-        //Modify
-        var translate_start_medium = {
-            width: this.sizeX,
-            height: this.sizeY_medium,
-            opacity: 1
-        };
-
-        var translate_end = {
+        this.translate_end = {
             width: 0,
             opacity: 0
         };
-
 
         this.setTitle = function (title) {
             this.title = title;
         };
 
         this.log = function (title, position) {
+            title = title.trim();//Remove initial space outside string
             var intervalClose;
+            var textSize = title.length;
             var timeLimit = 5000;
-            title = (this.title != '') ? this.title : title;
 
-            var translate_start = (title.length > 30) ? translate_start_medium : translate_start_small;
+            title = (this.title != '') ? this.title : title;
+            this.translate_start.height = textSize + 100;
 
             $('body').append(template(title, 0));
-            $('.alert-notify').animate(translate_start, this.timeIn, function () {
+            $('.alert-notify').animate(this.translate_start, this.timeIn, function () {
 
                 intervalClose = window.setTimeout(function () {
 
-                    $('.alert-notify').animate(translate_end, this.timeOut, function () {
+                    $('.alert-notify').animate(this.translate_end, this.timeOut, function () {
                         //Eliminate element
                         $('.alert-notify').remove();
                         window.clearTimeout(intervalClose);
@@ -67,7 +53,7 @@
 
                 $(".alert-notify").click(function (e) {
 
-                    $('.alert-notify').animate(translate_end, this.timeOut, function () {
+                    $('.alert-notify').animate(this.translate_end, this.timeOut, function () {
 
                         $('.alert-notify').remove();
                         window.clearTimeout(intervalClose);
@@ -78,18 +64,20 @@
 
         //Show alert when the call is correct
         this.success = function (title, position) {
+            title = title.trim();//Remove initial space outside string
             var intervalClose;
+            var textSize = title.length;
+
             var timeLimit = 5000;
             title = (this.title != '') ? this.title : title;
-
-            var translate_start = (title.length > 30) ? translate_start_medium : translate_start_small;
+            this.translate_start.height = textSize + 100;
 
             $('body').append(template(title, 1));
-            $('.alert-notify').animate(translate_start, this.timeIn, function () {
+            $('.alert-notify').animate(this.translate_start, this.timeIn, function () {
 
                 intervalClose = window.setTimeout(function () {
 
-                    $('.alert-notify').animate(translate_end, this.timeOut, function () {
+                    $('.alert-notify').animate(this.translate_end, this.timeOut, function () {
                         //Eliminate element
                         $('.alert-notify').remove();
                         window.clearTimeout(intervalClose);
@@ -99,7 +87,7 @@
 
                 $(".alert-notify").click(function (e) {
 
-                    $('.alert-notify').animate(translate_end, this.timeOut, function () {
+                    $('.alert-notify').animate(this.translate_end, this.timeOut, function () {
 
                         $('.alert-notify').remove();
                         window.clearTimeout(intervalClose);
@@ -109,18 +97,20 @@
         };
 
         this.error = function (title, position) {
+            title = title.trim();//Remove initial space outside string
             var intervalClose;
+            var textSize = title.length;
+
             var timeLimit = 5000;
             title = (this.title != '') ? this.title : title;
-
-            var translate_start = (title.length > 30) ? translate_start_medium : translate_start_small;
+            this.translate_start.height = textSize + 100;
 
             $('body').append(template(title, 2));
-            $('.alert-notify').animate(translate_start, this.timeIn, function () {
+            $('.alert-notify').animate(this.translate_start, this.timeIn, function () {
 
                 intervalClose = window.setTimeout(function () {
 
-                    $('.alert-notify').animate(translate_end, this.timeOut, function () {
+                    $('.alert-notify').animate(this.translate_end, this.timeOut, function () {
                         //Eliminate element
                         $('.alert-notify').remove();
                         window.clearTimeout(intervalClose);
@@ -130,7 +120,7 @@
 
                 $(".alert-notify").click(function (e) {
 
-                    $('.alert-notify').animate(translate_end, this.timeOut, function () {
+                    $('.alert-notify').animate(this.translate_end, this.timeOut, function () {
 
                         $('.alert-notify').remove();
                         window.clearTimeout(intervalClose);
@@ -139,13 +129,11 @@
             });
         };
 
-
-
-
-
+        /*
+         * Select kind of alert
+         */
         template = function (title, kind) {
-            //Select style
-            var selected;
+            var selected;//Result of selection
             switch (kind) {
                 case 0:
                     selected = "log-notify";
@@ -155,7 +143,6 @@
                     break;
                 case 2:
                     selected = "incorrect-notify";
-
             }
 
             var format = "<div class='" + selected + " alert-notify'>" +
