@@ -1,8 +1,8 @@
 (function () {
     //Principal object Alert_tc
-    Alert_tc = function (title) {
+    Alert_tc = function () {
 
-        this.title = title || "";
+        //Standar sizes
         this.sizeX = 400;
         this.sizeY = 150;
 
@@ -10,146 +10,104 @@
         this.sizeY_small = 120;
         this.sizeY_medium = 250;
 
-        this.timeIn = 300;
-        this.timeOut = 300;
+        //Time of animation
+        this.time_alert = 5000;
 
-        //Modify
+        //Current size of message
+        this.textSize = 0;
+
+        //Efects of objet
         this.translate_start = {
-            width: this.sizeX,
-            height: this.sizeY_small,
-            opacity: 1
+            "height"  : (this.textSize + 100),
+            "opacity" : 1,
+            "width"   : "30%"
         };
 
         this.translate_end = {
-            width: 0,
-            opacity: 0
+            "height"  : (this.textSize + 100),
+            "opacity" : 0,
+            "width"   : "0%"
         };
 
-        this.setTitle = function (title) {
-            this.title = title;
-        };
+        this.log = function (title) {
 
-        this.log = function (title, position) {
             title = title.trim();//Remove initial space outside string
-            var intervalClose;
-            var textSize = title.length;
-            var timeLimit = 5000;
+            var kind = "log-notify";
 
-            title = (this.title != '') ? this.title : title;
-            this.translate_start.height = textSize + 100;
+            //Get size of string to fix bar
+            this.textSize = title.length;
 
-            $('body').append(template(title, 0));
-            $('.alert-notify').animate(this.translate_start, this.timeIn, function () {
-
-                intervalClose = window.setTimeout(function () {
-
-                    $('.alert-notify').animate(this.translate_end, this.timeOut, function () {
-                        //Eliminate element
-                        $('.alert-notify').remove();
-                        window.clearTimeout(intervalClose);
-                    })
-                }, timeLimit);
-
-
-                $(".alert-notify").click(function (e) {
-
-                    $('.alert-notify').animate(this.translate_end, this.timeOut, function () {
-
-                        $('.alert-notify').remove();
-                        window.clearTimeout(intervalClose);
-                    })
-                });
-            });
+            this.setUpAlert(title,kind);
         };
 
         //Show alert when the call is correct
-        this.success = function (title, position) {
+        this.success = function (title) {
             title = title.trim();//Remove initial space outside string
-            var intervalClose;
-            var textSize = title.length;
+            var kind = "correct-notify";
 
-            var timeLimit = 5000;
-            title = (this.title != '') ? this.title : title;
-            this.translate_start.height = textSize + 100;
+            //Get size of string to fix bar
+            this.textSize = title.length;
 
-            $('body').append(template(title, 1));
-            $('.alert-notify').animate(this.translate_start, this.timeIn, function () {
-
-                intervalClose = window.setTimeout(function () {
-
-                    $('.alert-notify').animate(this.translate_end, this.timeOut, function () {
-                        //Eliminate element
-                        $('.alert-notify').remove();
-                        window.clearTimeout(intervalClose);
-                    })
-                }, timeLimit);
-
-
-                $(".alert-notify").click(function (e) {
-
-                    $('.alert-notify').animate(this.translate_end, this.timeOut, function () {
-
-                        $('.alert-notify').remove();
-                        window.clearTimeout(intervalClose);
-                    })
-                });
-            });
+            this.setUpAlert(title,kind);
         };
 
-        this.error = function (title, position) {
+        this.error = function (title) {
             title = title.trim();//Remove initial space outside string
-            var intervalClose;
-            var textSize = title.length;
+            var kind = "incorrect-notify";
 
-            var timeLimit = 5000;
-            title = (this.title != '') ? this.title : title;
-            this.translate_start.height = textSize + 100;
+            //Get size of string to fix bar
+            this.textSize = title.length;
 
-            $('body').append(template(title, 2));
-            $('.alert-notify').animate(this.translate_start, this.timeIn, function () {
-
-                intervalClose = window.setTimeout(function () {
-
-                    $('.alert-notify').animate(this.translate_end, this.timeOut, function () {
-                        //Eliminate element
-                        $('.alert-notify').remove();
-                        window.clearTimeout(intervalClose);
-                    })
-                }, timeLimit);
-
-
-                $(".alert-notify").click(function (e) {
-
-                    $('.alert-notify').animate(this.translate_end, this.timeOut, function () {
-
-                        $('.alert-notify').remove();
-                        window.clearTimeout(intervalClose);
-                    })
-                });
-            });
+            this.setUpAlert(title,kind);
         };
 
-        /*
-         * Select kind of alert
-         */
-        template = function (title, kind) {
-            var selected;//Result of selection
-            switch (kind) {
-                case 0:
-                    selected = "log-notify";
-                    break;
-                case 1:
-                    selected = "correct-notify";
-                    break;
-                case 2:
-                    selected = "incorrect-notify";
-            }
+        //Configure all methods of alert
+        this.setUpAlert = function(title,kind){
+            //Add template with specific class to alert
+            $('body').append(this.template(title, kind));
+            this.showAlert(kind);
 
-            var format = "<div class='" + selected + " alert-notify'>" +
-                "<h2 id='title'>" + title + "</h2>" +
-              "</div>";
-            return format;
+            //Remove alert after setup time
+            var isVisible = setTimeout(function(){
+                this.hiddeAlert(kind);
+            }.bind(this),this.time_alert);
+
+            //Remove alert when click over alert
+            $('.' + kind).click(function(){
+                this.hiddeAlert(kind);
+                clearTimeout(isVisible);
+            }.bind(this));
+        }
+
+        //Hide alert and remove element of DOM
+        this.hiddeAlert = function(kind){
+            //Set values of alert with object to end
+            $('.' + kind).css(this.translate_end);
+            $('.' + kind).addClass('animationEnd');
+            var clearElement = setTimeout(function(){
+                $('.' + kind).remove();
+            },300)
+        }
+
+        //Show Alert
+        this.showAlert = function(kind){
+            //Set height of alert
+            $('.' + kind).css("height",(this.textSize + 100),"opacity","1","width","20%");
+
+            //Set values of alert with object
+            $('.' + kind).css(this.translate_start);
+
+            //Call animation css keyframes
+            $('.' + kind).addClass('animationStart');
+        }
+
+        //Create templet with kind of alert
+        this.template = function (title, kind) {
+            return   "<div class='" + kind + " alert-notify'>" +
+                        "<h2 id='title'>" + title + "</h2>" +
+                     "</div>";
         }
     }
+    //Instance object
     alert_tc = new Alert_tc();
 })(this);

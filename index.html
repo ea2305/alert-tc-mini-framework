@@ -21,6 +21,7 @@
 
   <input id="buttom_1" type="submit" value="error">
   <input id="buttom_2" type="submit" value="correcto" >
+  <input id="buttom_3" type="submit" value="Atention" >
 
   <!--Insert in DOM with jquery-->
   <script src="js/notify-tc.js"></script>
@@ -32,12 +33,16 @@
 
       //Text incorrect on pressed
       $('#buttom_1').click(function(e){
-        alertify_tc.error('0123456789012345678901234567890123456789');
+        alert_tc.error('0123456789012345678901234567890123456789');
       })
 
       //Text correct on pressed
       $('#buttom_2').click(function(e){
-          alertify_tc.success('Mapa generado satisfactoriamente');
+          alert_tc.success('Mapa generado satisfactoriamente');
+      })
+
+      $('#buttom_3').click(function(e){
+          alert_tc.log('Mapa generado satisfactoriamente');
       })
 
     })()

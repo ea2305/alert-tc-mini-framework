@@ -1,17 +1,19 @@
 .alert-notify{
     top: 100px;
-    z-index: 100000;
+    z-index: 100000000;
     padding-left: 10px;
     padding-right: 10px;
     position: absolute;
-    opacity: 0;
     font-family: Roboto,Arial, Helvetica Neue;
     font-weight: bold;
     text-align: center;
     color: white;
+    right: 0px;
+
+    /*Animation parameters*/
+    opacity: 0;
     width: 0px;
     height: 0px;
-    right: 0px;
 }
 
 .alert-notify #title{
@@ -33,4 +35,43 @@
 .log-notify{
     border-top: 6px solid #f69600;
     background-color: #3c3c3b;
+}
+
+/*
+    Key Frames animation
+    Start animation and end animation settings
+*/
+
+.animationStart{
+    -webkit-animation: .3s fadeIn;
+            animation: .3s fadeIn;
+}
+
+.animationEnd{
+    -webkit-animation: .3s fadeOut;
+            animation: .3s fadeOut;
+}
+
+@keyframes fadeIn{
+    from{
+        width   : 0%;
+        opacity : 0;
+    }
+
+    to{
+        width   : 30%;
+        opacity : 1;
+    }
+}
+
+@keyframes fadeOut{
+    from{
+        width   : 30%;
+        opacity : 1;
+    }
+
+    to{
+        width   : 0%;
+        opacity : 0;
+    }
 }
